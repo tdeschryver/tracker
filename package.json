@@ -1,0 +1,25 @@
+{
+  "name": "tracker",
+  "version": "0.0.1",
+  "description": "Time tracker",
+  "bin": {
+    "track": "bin/tracker.js",
+    "tracker": "bin/tracker.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdeschryver/tracker.git"
+  },
+  "scripts": {
+    "test": "echo \"TODO\"",
+    "format": "eslint --fix ."
+  },
+  "author": "tdeschryver",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.4.1",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-plugin-prettier": "^2.1.2",
+    "prettier": "^1.5.3"
+  }
+}

@@ -6,17 +6,26 @@ const timetable = events =>
   events.reduce((report, event) => {
     report[event.task] = report[event.task] || []
     if (event.name === 'timer_started') {
-      report[event.task] = [...report[event.task], [event.startedAt, null]]
-      return report
+      return {
+        ...report,
+        [event.task]: [...report[event.task], [event.startedAt, null]],
+      }
     }
 
     if (event.name === 'timer_stopped') {
-      report[event.task][
-        report[event.task].length - 1
-      ] = Object.assign([], report[event.task][report[event.task].length - 1], {
-        1: event.stoppedAt,
-      })
-      return report
+      return {
+        ...report,
+        [event.task]: report[event.task].map((entry, index) => {
+          if (index === report[event.task].length - 1) {
+            return Object.assign(
+              [],
+              report[event.task][report[event.task].length - 1],
+              { 1: event.stoppedAt },
+            )
+          }
+          return entry
+        }),
+      }
     }
   }, {})
 
@@ -33,7 +42,7 @@ const status = events => {
 
 const total = events => {
   const times = timetable(events)
-  Object.keys(times)
+  const totals = Object.keys(times)
     .reduce((rpt, task) => {
       let running = false
       const totalSeconds = times[task].reduce((total, entry) => {
@@ -45,13 +54,12 @@ const total = events => {
       rpt.push({ task, totalSeconds, running })
       return rpt
     }, [])
-    .forEach(total => {
-      log(
-        `${total.task}: ${total.totalSeconds} seconds${total.running
-          ? ' (still running)'
-          : ''}.`,
-      )
-    })
+    .reduce((result, total, index) => {
+      // eslint-disable-next-line
+      return result + `${index ? '\n' : ''}${total.task}: ${total.totalSeconds} seconds${total.running ? ' (still running)' : ''}.`
+    }, '')
+
+  log(totals)
 }
 
 module.exports = { ...module.exports, status, total }

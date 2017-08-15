@@ -1,6 +1,6 @@
 const store = require('./store')
 
-module.exports = async ({ command, data, file = '/.tracker-store.json' }) => {
+module.exports = async ({ command, data, file }) => {
   if (!await store.exists(file)) {
     await store.create(file)
   }

@@ -13,7 +13,7 @@ const stop = async (
   { name = 'timer_stopped', stoppedAt = now(), task = '', sequenceNumber = 1 },
   file,
 ) => {
-  await store.append({ name, stoppedAt, sequenceNumber }, file)
+  await store.append({ name, task, stoppedAt, sequenceNumber }, file)
   log(`[${task}]: stopped`)
 }
 

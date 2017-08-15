@@ -12,6 +12,7 @@ module.exports = async ({ command, data, file = '/.tracker-store.json' }) => {
       require('./writes')[command](data, events, file)
       break
     case 'status':
+    case 'total':
       require('./reads')[command](events)
       break
     default:

@@ -24,6 +24,10 @@ const start = async (data, events, file) => {
 
 const stop = async (data, events, file) => {
   const lastEvent = events[events.length - 1]
+  if (lastEvent && lastEvent.name === 'timer_stopped') {
+    return
+  }
+
   let currentSequenceNumber = (lastEvent && lastEvent.sequenceNumber) || 0
 
   await stopEvent(

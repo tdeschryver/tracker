@@ -1,0 +1,14 @@
+[
+  {
+    "name": "timer_started",
+    "task": "bob",
+    "startedAt": 1502800821082,
+    "sequenceNumber": 1
+  },
+  {
+    "name": "timer_stopped",
+    "task": "bob",
+    "stoppedAt": 1502809258824,
+    "sequenceNumber": 2
+  }
+]

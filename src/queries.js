@@ -1,4 +1,4 @@
-const { log, now } = require('./utils')
+const { now } = require('./utils')
 
 const seconds = (a, b) => (a - b) / 1000
 
@@ -33,16 +33,15 @@ const status = events => {
   const lastEvent = events[events.length - 1]
   if (lastEvent && lastEvent.name === 'timer_started') {
     const secondsElapsed = seconds(now(), lastEvent.startedAt)
-    log(`${lastEvent.task} been running for ${secondsElapsed} seconds.`)
-    return
+    return `${lastEvent.task} been running for ${secondsElapsed} seconds.`
   }
 
-  log('Nothing being tracked.')
+  return 'Nothing being tracked.'
 }
 
 const total = events => {
   const times = timetable(events)
-  const totals = Object.keys(times)
+  return Object.keys(times)
     .reduce((rpt, task) => {
       let running = false
       const totalSeconds = times[task].reduce((total, entry) => {
@@ -50,16 +49,12 @@ const total = events => {
         total += seconds(entry[1] || now(), entry[0])
         return total
       }, 0)
-
-      rpt.push({ task, totalSeconds, running })
-      return rpt
+      return [...rpt, { task, totalSeconds, running }]
     }, [])
     .reduce((result, total, index) => {
       // eslint-disable-next-line
-      return result + `${index ? '\n' : ''}${total.task}: ${total.totalSeconds} seconds${total.running ? ' (still running)' : ''}.`
+      return (result + `${index ? '\n' : ''}${total.task}: ${total.totalSeconds} seconds${total.running ? ' (still running)' : ''}.`)
     }, '')
-
-  log(totals)
 }
 
 module.exports = { ...module.exports, status, total }

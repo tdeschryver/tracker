@@ -1,0 +1,8 @@
+[
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502800821082,
+    "sequenceNumber": 1
+  }
+]

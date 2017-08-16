@@ -1,20 +1,27 @@
-const store = require('./store')
-const { log, now } = require('./utils')
+const { now } = require('./utils')
 
-const start = async (
-  { name = 'timer_started', startedAt = now(), task = '', sequenceNumber = 1 },
-  file,
-) => {
-  await store.append({ name, task, startedAt, sequenceNumber }, file)
-  log(`[${task}]: started`)
-}
+const start = ({
+  name = 'timer_started',
+  startedAt = now(),
+  task = '',
+  sequenceNumber = 1,
+}) => ({
+  name,
+  task,
+  startedAt,
+  sequenceNumber,
+})
 
-const stop = async (
-  { name = 'timer_stopped', stoppedAt = now(), task = '', sequenceNumber = 1 },
-  file,
-) => {
-  await store.append({ name, task, stoppedAt, sequenceNumber }, file)
-  log(`[${task}]: stopped`)
-}
+const stop = ({
+  name = 'timer_stopped',
+  stoppedAt = now(),
+  task = '',
+  sequenceNumber = 1,
+}) => ({
+  name,
+  task,
+  stoppedAt,
+  sequenceNumber,
+})
 
 module.exports = { ...module.exports, start, stop }

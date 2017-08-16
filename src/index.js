@@ -1,22 +1,15 @@
-const store = require('./store')
-
-module.exports = async ({ command, data, file }) => {
-  if (!await store.exists(file)) {
-    await store.create(file)
-  }
-  const events = await store.read(file)
-
+module.exports = ({ command, data, history }, { message, events, error }) => {
   switch (command) {
     case 'start':
     case 'stop':
-      require('./writes')[command](data, events, file)
+      events(require('./commands')[command](data, history))
       break
     case 'status':
     case 'total':
-      require('./reads')[command](events)
+      message(require('./queries')[command](history))
       break
     default:
-      require('./utils').log(`Command ${command} not found.`)
+      error(`Command ${command} not found.`)
       break
   }
 }

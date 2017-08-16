@@ -1,0 +1,38 @@
+[
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502895913432,
+    "sequenceNumber": 1
+  },
+  {
+    "name": "timer_stopped",
+    "task": "foo",
+    "stoppedAt": 1502895919113,
+    "sequenceNumber": 2
+  },
+  {
+    "name": "timer_started",
+    "task": "bar",
+    "startedAt": 1502897944485,
+    "sequenceNumber": 3
+  },
+  {
+    "name": "timer_stopped",
+    "task": "bar",
+    "stoppedAt": 1502897948528,
+    "sequenceNumber": 4
+  },
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502899601626,
+    "sequenceNumber": 5
+  },
+  {
+    "name": "timer_stopped",
+    "task": "foo",
+    "stoppedAt": 1502906737093,
+    "sequenceNumber": 6
+  }
+]

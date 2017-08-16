@@ -11,7 +11,7 @@
     "url": "https://github.com/tdeschryver/tracker.git"
   },
   "scripts": {
-    "test": "echo \"TODO\"",
+    "test": "tape tests/**/*.js",
     "format": "eslint --fix ."
   },
   "author": "tdeschryver",
@@ -20,6 +20,10 @@
     "eslint": "^4.4.1",
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-prettier": "^2.1.2",
-    "prettier": "^1.5.3"
-  }
+    "prettier": "^1.5.3",
+    "sinon": "^3.2.0",
+    "tape": "^4.8.0",
+    "tape-async": "^2.3.0"
+  },
+  "dependencies": {}
 }

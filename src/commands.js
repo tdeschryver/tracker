@@ -1,13 +1,12 @@
 const { start: createStart, stop: createStop } = require('./events')
 
-const start = (data, events) => {
+const start = ({ task }, events) => {
   const lastEvent = events[events.length - 1]
-  let currentSequenceNumber = (lastEvent && lastEvent.sequenceNumber) || 0
-
-  if (lastEvent && lastEvent.task === data.task) {
+  if (lastEvent && lastEvent.task === task) {
     return []
   }
 
+  let currentSequenceNumber = (lastEvent && lastEvent.sequenceNumber) || 0
   if (lastEvent && lastEvent.name === 'timer_started') {
     return [
       createStop({
@@ -15,8 +14,7 @@ const start = (data, events) => {
         sequenceNumber: ++currentSequenceNumber,
       }),
       createStart({
-        ...data,
-        task: data.task,
+        task,
         sequenceNumber: ++currentSequenceNumber,
       }),
     ]
@@ -24,9 +22,8 @@ const start = (data, events) => {
 
   return [
     createStart({
-      task: data.task,
+      task: task,
       sequenceNumber: ++currentSequenceNumber,
-      ...data,
     }),
   ]
 }
@@ -40,7 +37,6 @@ const stop = (data, events) => {
   const currentSequenceNumber = (lastEvent && lastEvent.sequenceNumber) || 0
   return [
     createStop({
-      ...data,
       task: lastEvent.task,
       sequenceNumber: currentSequenceNumber + 1,
     }),

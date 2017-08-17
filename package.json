@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Time tracker",
   "bin": {
-    "track": "bin/tracker.js",
-    "tracker": "bin/tracker.js"
+    "track": "src/bin/cmd.js",
+    "trackl": "src/bin/trackerl.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,7 @@
     "tape": "^4.8.0",
     "tape-async": "^2.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "inquirer": "^3.2.1"
+  }
 }

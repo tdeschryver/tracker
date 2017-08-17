@@ -2,6 +2,7 @@
   "name": "tracker",
   "version": "0.0.1",
   "description": "Time tracker",
+  "main": "src/index.js",
   "bin": {
     "track": "src/bin/cmd.js",
     "trackl": "src/bin/trackerl.js"
@@ -9,6 +10,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tdeschryver/tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tdeschryver/tracker/issues"
   },
   "scripts": {
     "test": "tape tests/**/*.js",

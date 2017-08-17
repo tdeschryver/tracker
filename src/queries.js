@@ -1,4 +1,4 @@
-const { now } = require('./utils')
+const { now, formatSeconds } = require('./utils')
 
 const seconds = (a, b) => (a - b) / 1000
 
@@ -32,8 +32,8 @@ const timetable = events =>
 const status = events => {
   const lastEvent = events[events.length - 1]
   if (lastEvent && lastEvent.name === 'timer_started') {
-    const secondsElapsed = seconds(now(), lastEvent.startedAt)
-    return `${lastEvent.task} been running for ${secondsElapsed} seconds.`
+    const hhMMss = formatSeconds(seconds(now(), lastEvent.startedAt))
+    return `${lastEvent.task} been running for ${hhMMss}.`
   }
 
   return 'Nothing being tracked.'
@@ -53,7 +53,7 @@ const total = events => {
     }, [])
     .reduce((result, total, index) => {
       // eslint-disable-next-line
-      return (result + `${index ? '\n' : ''}${total.task}: ${total.totalSeconds} seconds${total.running ? ' (still running)' : ''}.`)
+      return `${result}${index ? '\n' : ''}${total.task}: ${formatSeconds(total.totalSeconds)}${total.running ? ' (still running)' : ''}`
     }, '')
 }
 

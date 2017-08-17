@@ -52,7 +52,7 @@ test('status with a running task', async assert => {
       message: msg =>
         assert.equal(
           msg,
-          'foo been running for 28482.014 seconds.',
+          'foo been running for 07h54m42s.',
           'should show running task with duration',
         ),
     },
@@ -88,11 +88,7 @@ test('total', async assert => {
     },
     {
       message: msg =>
-        assert.equal(
-          msg,
-          'foo: 7141.147999999999 seconds.\nbar: 4.043 seconds.',
-          'should add up per task',
-        ),
+        assert.equal(msg, 'foo: 01h59m01s\nbar: 04s', 'should add up per task'),
     },
   )
 

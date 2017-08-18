@@ -30,6 +30,8 @@
     "tape-async": "^2.3.0"
   },
   "dependencies": {
-    "inquirer": "^3.2.1"
+    "fuse.js": "^3.0.5",
+    "inquirer": "^3.2.1",
+    "inquirer-autocomplete-prompt": "^0.11.1"
   }
 }

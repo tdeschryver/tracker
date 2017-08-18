@@ -6,17 +6,22 @@ const defaultFile = () =>
     ? `${process.env.userprofile}\\.tracker-store.json`
     : '~/.tracker-store.json'
 
-const track = ({ file, command, task }) => {
-  if (!store.exists(file)) {
-    store.create(file)
+const history = file => {
+  if (store.exists(file)) {
+    return store.read(file)
   }
 
+  store.create(file)
+  return []
+}
+
+const track = ({ file, command, task, history }) => {
   const cmd = {
     command,
     data: {
       task,
     },
-    history: store.read(file),
+    history,
   }
 
   const log = value => process.stdout.write(`${value}\n`)
@@ -27,4 +32,4 @@ const track = ({ file, command, task }) => {
   })
 }
 
-module.exports = { ...module.exports, track, defaultFile }
+module.exports = { ...module.exports, track, history, defaultFile }

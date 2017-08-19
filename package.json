@@ -7,6 +7,16 @@
     "track": "src/bin/cmd.js",
     "trackl": "src/bin/trackerl.js"
   },
+  "scripts": {
+    "test": "tape tests/**/*.js | faucet",
+    "format": "eslint --fix .",
+    "precommit": "lint-staged && npm test"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"],
+    "*.json": ["prettier --write", "git add"]
+  },
+  "homepage": "https://github.com/tdeschryver/tracker",
   "repository": {
     "type": "git",
     "url": "https://github.com/tdeschryver/tracker.git"
@@ -14,16 +24,14 @@
   "bugs": {
     "url": "https://github.com/tdeschryver/tracker/issues"
   },
-  "scripts": {
-    "test": "tape tests/**/*.js",
-    "format": "eslint --fix ."
-  },
   "author": "tdeschryver",
-  "license": "MIT",
   "devDependencies": {
     "eslint": "^4.4.1",
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-prettier": "^2.1.2",
+    "faucet": "0.0.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.0.3",
     "prettier": "^1.5.3",
     "sinon": "^3.2.0",
     "tape": "^4.8.0",

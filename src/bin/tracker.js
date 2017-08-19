@@ -1,4 +1,6 @@
 const store = require('./store')
+const { errorFormatter, infoFormatter } = require('./logger-formatter')
+const logger = require('./logger')
 const tracker = require('../')
 
 const defaultFile = () =>
@@ -15,6 +17,19 @@ const history = file => {
   return []
 }
 
+const handleEvents = events => {
+  events.forEach(({ name, task }) => {
+    switch (name) {
+      case 'timer_started':
+        logger.log(`Started ${task}`, infoFormatter)
+        break
+      case 'timer_stopped':
+        logger.log(`Stopped ${task}`, infoFormatter)
+        break
+    }
+  })
+}
+
 const track = ({ file, command, task, history }) => {
   const cmd = {
     command,
@@ -24,11 +39,16 @@ const track = ({ file, command, task, history }) => {
     history,
   }
 
-  const log = value => process.stdout.write(`${value}\n`)
   tracker(cmd, {
-    message: log,
-    error: log,
-    events: events => store.append(file, events),
+    message: logger.log,
+    error: err => {
+      logger.log(err, errorFormatter)
+      process.exitCode = 1
+    },
+    events: events => {
+      store.append(file, events)
+      handleEvents(events)
+    },
   })
 }
 

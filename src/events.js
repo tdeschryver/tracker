@@ -1,8 +1,6 @@
-const { now } = require('./utils')
-
 const start = ({
   name = 'timer_started',
-  startedAt = now(),
+  startedAt = Date.now(),
   task = '',
   sequenceNumber = 1,
 }) => ({
@@ -14,7 +12,7 @@ const start = ({
 
 const stop = ({
   name = 'timer_stopped',
-  stoppedAt = now(),
+  stoppedAt = Date.now(),
   task = '',
   sequenceNumber = 1,
 }) => ({

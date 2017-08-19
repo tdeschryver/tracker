@@ -1,5 +1,3 @@
-const now = () => Date.now()
-
 const pad = (value, { padder = '0', count = 2 } = {}) =>
   `${padder}${value}`.slice(-count)
 
@@ -12,4 +10,4 @@ const formatSeconds = value => {
   return `${format(hours, 'h')}${format(minutes, 'm')}${format(seconds, 's')}`
 }
 
-module.exports = { ...module.exports, now, pad, formatSeconds }
+module.exports = { ...module.exports, pad, formatSeconds }

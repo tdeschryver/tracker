@@ -29,6 +29,10 @@ const start = ({ task }, events) => {
 }
 
 const stop = (data, events) => {
+  if (!events.length) {
+    return []
+  }
+
   const lastEvent = events[events.length - 1]
   if (lastEvent && lastEvent.name === 'timer_stopped') {
     return []

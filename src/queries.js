@@ -1,4 +1,4 @@
-const { now, formatSeconds } = require('./utils')
+const { formatSeconds } = require('./utils')
 
 const seconds = (a, b) => (a - b) / 1000
 
@@ -32,7 +32,7 @@ const timetable = events =>
 const status = events => {
   const lastEvent = events[events.length - 1]
   if (lastEvent && lastEvent.name === 'timer_started') {
-    const hhMMss = formatSeconds(seconds(now(), lastEvent.startedAt))
+    const hhMMss = formatSeconds(seconds(Date.now(), lastEvent.startedAt))
     return `${lastEvent.task} been running for ${hhMMss}.`
   }
 
@@ -46,7 +46,7 @@ const total = events => {
       let running = false
       const totalSeconds = times[task].reduce((total, entry) => {
         running = entry[1] === null
-        total += seconds(entry[1] || now(), entry[0])
+        total += seconds(entry[1] || Date.now(), entry[0])
         return total
       }, 0)
       return [...rpt, { task, totalSeconds, running }]

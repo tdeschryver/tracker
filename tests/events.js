@@ -1,11 +1,11 @@
 const test = require('tape')
 const sinon = require('sinon')
-const utils = require('../src/utils')
 const tracker = require('../src')
 
 const setup = () => {
-  return [sinon.stub(utils, 'now').callsFake(() => 1502829303096)]
+  return [sinon.useFakeTimers(1502829303096)]
 }
+
 const teardown = stubs => {
   stubs.forEach(stub => stub.restore())
 }

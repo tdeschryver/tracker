@@ -1,15 +1,15 @@
 const fs = require('fs')
 const test = require('tape-async')
 const sinon = require('sinon')
-const utils = require('../src/utils')
 const tracker = require('../src')
 
 const setup = async fileName => {
   return {
-    stubs: [sinon.stub(utils, 'now').callsFake(() => 1502829303096)],
+    stubs: [sinon.useFakeTimers(1502829303096)],
     fixture: await read(`./tests/fixtures/${fileName}.json`),
   }
 }
+
 const teardown = stubs => {
   stubs.forEach(stub => stub.restore())
 }

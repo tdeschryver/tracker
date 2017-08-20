@@ -1,6 +1,7 @@
 const store = require('./store')
 const { errorFormatter, infoFormatter } = require('./logger-formatter')
 const logger = require('./logger')
+const printer = require('./printers')('text')
 const tracker = require('../')
 
 const defaultFile = () =>
@@ -40,7 +41,9 @@ const track = ({ file, command, task, history }) => {
   }
 
   tracker(cmd, {
-    message: logger.log,
+    message: msg => {
+      logger.log(printer(command, msg))
+    },
     error: err => {
       logger.log(err, errorFormatter)
       process.exitCode = 1

@@ -14,26 +14,17 @@ const teardown = stubs => {
   stubs.forEach(stub => stub.restore())
 }
 
-const read = file =>
-  new Promise((resolve, reject) => {
-    fs.readFile(file, { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        reject(err)
-      }
-      resolve(JSON.parse(data))
-    })
-  })
-
 test('status with no tasks', async assert => {
   const { stubs, fixture } = await setup('status-empty')
+  const expected = { task: '', running: false, seconds: 0 }
+
   tracker(
     {
       command: 'status',
       history: fixture,
     },
     {
-      message: msg =>
-        assert.equal(msg, 'Nothing being tracked.', 'should show nothing'),
+      message: msg => assert.deepEqual(msg, expected, 'should show nothing'),
     },
   )
 
@@ -42,6 +33,7 @@ test('status with no tasks', async assert => {
 
 test('status with a running task', async assert => {
   const { stubs, fixture } = await setup('status-running')
+  const expected = { task: 'foo', running: true, seconds: 28482.014 }
 
   tracker(
     {
@@ -50,9 +42,9 @@ test('status with a running task', async assert => {
     },
     {
       message: msg =>
-        assert.equal(
+        assert.deepEqual(
           msg,
-          'foo been running for 07h54m42s.',
+          expected,
           'should show running task with duration',
         ),
     },
@@ -63,6 +55,7 @@ test('status with a running task', async assert => {
 
 test('status with a stopped task', async assert => {
   const { stubs, fixture } = await setup('status-stopped')
+  const expected = { task: '', running: false, seconds: 0 }
 
   tracker(
     {
@@ -70,8 +63,7 @@ test('status with a stopped task', async assert => {
       history: fixture,
     },
     {
-      message: msg =>
-        assert.equal(msg, 'Nothing being tracked.', 'should show nothing'),
+      message: msg => assert.deepEqual(msg, expected, 'should show nothing'),
     },
   )
 
@@ -80,6 +72,10 @@ test('status with a stopped task', async assert => {
 
 test('total', async assert => {
   const { stubs, fixture } = await setup('total')
+  const expected = [
+    { task: 'foo', totalSeconds: 7141.147999999999, running: false },
+    { task: 'bar', totalSeconds: 4.043, running: false },
+  ]
 
   tracker(
     {
@@ -87,10 +83,19 @@ test('total', async assert => {
       history: fixture,
     },
     {
-      message: msg =>
-        assert.equal(msg, 'foo: 01h59m01s\nbar: 04s', 'should add up per task'),
+      message: msg => assert.deepEqual(msg, expected),
     },
   )
 
   teardown(stubs)
 })
+
+const read = file =>
+  new Promise((resolve, reject) => {
+    fs.readFile(file, { encoding: 'utf-8' }, (err, data) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(JSON.parse(data))
+    })
+  })

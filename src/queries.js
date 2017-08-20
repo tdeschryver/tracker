@@ -1,5 +1,3 @@
-const { formatSeconds } = require('./utils')
-
 const seconds = (a, b) => (a - b) / 1000
 
 const timetable = events =>
@@ -32,29 +30,36 @@ const timetable = events =>
 const status = events => {
   const lastEvent = events[events.length - 1]
   if (lastEvent && lastEvent.name === 'timer_started') {
-    const hhMMss = formatSeconds(seconds(Date.now(), lastEvent.startedAt))
-    return `${lastEvent.task} been running for ${hhMMss}.`
+    return {
+      task: lastEvent.task,
+      running: true,
+      seconds: seconds(Date.now(), lastEvent.startedAt),
+    }
   }
 
-  return 'Nothing being tracked.'
+  return {
+    task: '',
+    running: false,
+    seconds: 0,
+  }
 }
 
 const total = events => {
   const times = timetable(events)
-  return Object.keys(times)
-    .reduce((rpt, task) => {
-      let running = false
-      const totalSeconds = times[task].reduce((total, entry) => {
-        running = entry[1] === null
-        total += seconds(entry[1] || Date.now(), entry[0])
-        return total
-      }, 0)
-      return [...rpt, { task, totalSeconds, running }]
-    }, [])
-    .reduce((result, total, index) => {
-      // eslint-disable-next-line
-      return `${result}${index ? '\n' : ''}${total.task}: ${formatSeconds(total.totalSeconds)}${total.running ? ' (still running)' : ''}`
-    }, '')
+  return Object.keys(times).reduce((rpt, task) => {
+    const taskEntries = times[task]
+    return [
+      ...rpt,
+      {
+        task,
+        totalSeconds: taskEntries.reduce(
+          (total, entry) => total + seconds(entry[1] || Date.now(), entry[0]),
+          0,
+        ),
+        running: taskEntries[taskEntries.length - 1][1] === null,
+      },
+    ]
+  }, [])
 }
 
 module.exports = { ...module.exports, status, total }

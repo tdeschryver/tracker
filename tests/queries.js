@@ -114,7 +114,7 @@ test('today when task started yesterday and is still running', async assert => {
   const { stubs, fixture } = await setup(
     'today-started-yesterday-still-running',
   )
-  const expected = [{ task: 'bar', totalSeconds: 81303.096, running: true }]
+  const expected = [{ task: 'bar', totalSeconds: 74103.096, running: true }]
 
   tracker(
     {
@@ -133,7 +133,7 @@ test('today when task started yesterday and is stopped', async assert => {
   const { stubs, fixture } = await setup(
     'today-started-yesterday-stopped-today',
   )
-  const expected = [{ task: 'bar', totalSeconds: 63303.096, running: false }]
+  const expected = [{ task: 'bar', totalSeconds: 56103.096, running: false }]
 
   tracker(
     {

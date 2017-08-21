@@ -1,9 +1,8 @@
 const seconds = value => value / 1000
 const duration = (a, b) => a - b
 const todayDate = () => {
-  let d = new Date()
-  d.setHours(0, 0, 0, 0)
-  return d.getTime()
+  const date = new Date()
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
 }
 const ONE_DAY = 24 * 60 * 60 * 1000
 

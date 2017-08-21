@@ -1,11 +1,14 @@
 const { formatSeconds } = require('../../utils')
 
 const summarize = tasks =>
-  tasks.reduce(
-    (result, total, index) =>
-      // eslint-disable-next-line
-      `${result}${index ? '\n' : ''}${total.task}: ${formatSeconds(total.totalSeconds)}${total.running ? ' (still running)' : ''}`,     '',
-  )
+  tasks
+    .map(
+      total =>
+        `${total.task}: ${formatSeconds(total.totalSeconds)}${total.running
+          ? ' (still running)'
+          : ''}`,
+    )
+    .join('\n')
 
 const printers = {
   status: ({ task, running, seconds }) => {

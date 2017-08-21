@@ -1,0 +1,98 @@
+[
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502723113432,
+    "sequenceNumber": 1
+  },
+  {
+    "name": "timer_stopped",
+    "task": "foo",
+    "stoppedAt": 1502723119113,
+    "sequenceNumber": 2
+  },
+  {
+    "name": "timer_started",
+    "task": "bar",
+    "startedAt": 1502725144485,
+    "sequenceNumber": 3
+  },
+  {
+    "name": "timer_stopped",
+    "task": "bar",
+    "stoppedAt": 1502725148528,
+    "sequenceNumber": 4
+  },
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502809513432,
+    "sequenceNumber": 5
+  },
+  {
+    "name": "timer_stopped",
+    "task": "foo",
+    "stoppedAt": 1502809519113,
+    "sequenceNumber": 6
+  },
+  {
+    "name": "timer_started",
+    "task": "bar",
+    "startedAt": 1502811544485,
+    "sequenceNumber": 7
+  },
+  {
+    "name": "timer_stopped",
+    "task": "bar",
+    "stoppedAt": 1502811548528,
+    "sequenceNumber": 8
+  },
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502895913432,
+    "sequenceNumber": 9
+  },
+  {
+    "name": "timer_stopped",
+    "task": "foo",
+    "stoppedAt": 1502895919113,
+    "sequenceNumber": 10
+  },
+  {
+    "name": "timer_started",
+    "task": "bar",
+    "startedAt": 1502897944485,
+    "sequenceNumber": 11
+  },
+  {
+    "name": "timer_stopped",
+    "task": "bar",
+    "stoppedAt": 1502897948528,
+    "sequenceNumber": 12
+  },
+  {
+    "name": "timer_started",
+    "task": "foo",
+    "startedAt": 1502982313432,
+    "sequenceNumber": 13
+  },
+  {
+    "name": "timer_stopped",
+    "task": "foo",
+    "stoppedAt": 1502982319113,
+    "sequenceNumber": 14
+  },
+  {
+    "name": "timer_started",
+    "task": "bar",
+    "startedAt": 1502984344485,
+    "sequenceNumber": 15
+  },
+  {
+    "name": "timer_stopped",
+    "task": "bar",
+    "stoppedAt": 1502984348528,
+    "sequenceNumber": 16
+  }
+]

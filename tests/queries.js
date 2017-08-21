@@ -90,6 +90,81 @@ test('total', async assert => {
   teardown(stubs)
 })
 
+test('today', async assert => {
+  const { stubs, fixture } = await setup('today')
+  const expected = [
+    { task: 'foo', totalSeconds: 5.681, running: false },
+    { task: 'bar', totalSeconds: 4.043, running: false },
+  ]
+
+  tracker(
+    {
+      command: 'today',
+      history: fixture,
+    },
+    {
+      message: msg => assert.deepEqual(msg, expected),
+    },
+  )
+
+  teardown(stubs)
+})
+
+test('today when task started yesterday and is still running', async assert => {
+  const { stubs, fixture } = await setup(
+    'today-started-yesterday-still-running',
+  )
+  const expected = [{ task: 'bar', totalSeconds: 81303.096, running: true }]
+
+  tracker(
+    {
+      command: 'today',
+      history: fixture,
+    },
+    {
+      message: msg => assert.deepEqual(msg, expected),
+    },
+  )
+
+  teardown(stubs)
+})
+
+test('today when task started yesterday and is stopped', async assert => {
+  const { stubs, fixture } = await setup(
+    'today-started-yesterday-stopped-today',
+  )
+  const expected = [{ task: 'bar', totalSeconds: 63303.096, running: false }]
+
+  tracker(
+    {
+      command: 'today',
+      history: fixture,
+    },
+    {
+      message: msg => assert.deepEqual(msg, expected),
+    },
+  )
+
+  teardown(stubs)
+})
+
+test('today task started today and is still running', async assert => {
+  const { stubs, fixture } = await setup('today-started-today-still-running')
+  const expected = [{ task: 'foo', totalSeconds: 18000, running: true }]
+
+  tracker(
+    {
+      command: 'today',
+      history: fixture,
+    },
+    {
+      message: msg => assert.deepEqual(msg, expected),
+    },
+  )
+
+  teardown(stubs)
+})
+
 const read = file =>
   new Promise((resolve, reject) => {
     fs.readFile(file, { encoding: 'utf-8' }, (err, data) => {

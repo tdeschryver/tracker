@@ -61,7 +61,7 @@ const questions = [
     type: 'list',
     name: 'report',
     message: 'Choose a report',
-    choices: ['total'],
+    choices: ['total', 'today'],
     when: answers => answers.command === 'report',
   },
 ]

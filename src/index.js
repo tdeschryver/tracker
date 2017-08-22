@@ -8,6 +8,7 @@ module.exports = ({ command, data, history }, { message, events, error }) => {
     case 'total':
     case 'today':
     case 'timesheet':
+    case 'timesheettoday':
       message(require('./queries')[command](history))
       break
     default:

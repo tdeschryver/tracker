@@ -31,6 +31,8 @@ const printers = {
   total: summarize,
   today: summarize,
   timesheet: entries => timesheet(entries, date => date.toLocaleString()),
+  timesheettoday: entries =>
+    timesheet(entries, date => date.toLocaleTimeString()),
 }
 
 module.exports = (report, input) => printers[report](input)

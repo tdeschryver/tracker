@@ -103,10 +103,19 @@ const timesheet = events =>
     ({ from: fromA }, { from: fromB }) => fromA - fromB,
   )
 
+const timesheettoday = events => {
+  const from = todayDate()
+  const to = from + ONE_DAY
+  return totals(events, timesheetReducer, from, to).sort(
+    ({ from: fromA }, { from: fromB }) => fromA - fromB,
+  )
+}
+
 module.exports = {
   ...module.exports,
   status,
   total,
   today,
   timesheet,
+  timesheettoday,
 }

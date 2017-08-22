@@ -33,37 +33,43 @@ const timetable = events =>
     }
   }, {})
 
-const totals = (events, checkFrom, checkTo) => {
+const totalRecuder = (task, entries) => ({
+  task,
+  totalSeconds: entries.reduce(
+    (total, [from, to]) => total + seconds(duration(to || Date.now(), from)),
+    0,
+  ),
+  running: entries[entries.length - 1][2],
+})
+
+const timesheetReducer = (task, entries) =>
+  entries.map(([from, to]) => ({
+    task,
+    from,
+    to,
+  }))
+
+const totals = (events, recuder, checkFrom, checkTo) => {
   const times = timetable(events)
   return Object.keys(times).reduce((rpt, task) => {
-    const taskEntries = times[task].filter(entry => {
-      const entryFrom = entry[0]
-      const entryTo = entry[1] || Date.now()
+    const taskEntries = times[task]
+      .filter(entry => {
+        const entryFrom = entry[0]
+        const entryTo = entry[1] || Date.now()
 
-      const fromOutRange =
-        checkFrom && entryFrom < checkFrom && entryTo < checkFrom
-      const toOutRange = checkTo && entryFrom > checkTo && entryTo > checkTo
+        const fromOutRange =
+          checkFrom && entryFrom < checkFrom && entryTo < checkFrom
+        const toOutRange = checkTo && entryFrom > checkTo && entryTo > checkTo
 
-      return !fromOutRange && !toOutRange
-    })
+        return !fromOutRange && !toOutRange
+      })
+      .map(([from, to]) => [
+        Math.max(from, checkFrom || from),
+        Math.min(to, checkTo || to),
+        to === null,
+      ])
 
-    return taskEntries.length
-      ? [
-          ...rpt,
-          {
-            task,
-            totalSeconds: taskEntries.reduce((total, entry) => {
-              const entryFrom = entry[0]
-              const entryTo = entry[1] || Date.now()
-
-              let from = Math.max(entryFrom, checkFrom || entryFrom)
-              let to = Math.min(entryTo, checkTo || entryTo)
-              return total + seconds(duration(to, from))
-            }, 0),
-            running: taskEntries[taskEntries.length - 1][1] === null,
-          },
-        ]
-      : []
+    return taskEntries.length ? rpt.concat(recuder(task, taskEntries)) : rpt
   }, [])
 }
 
@@ -84,12 +90,23 @@ const status = events => {
   }
 }
 
-const total = events => totals(events)
+const total = events => totals(events, totalRecuder)
 
 const today = events => {
-  const checker = todayDate()
-  const tomorrow = checker + ONE_DAY
-  return totals(events, checker, tomorrow)
+  const from = todayDate()
+  const to = from + ONE_DAY
+  return totals(events, totalRecuder, from, to)
 }
 
-module.exports = { ...module.exports, status, total, today }
+const timesheet = events =>
+  totals(events, timesheetReducer).sort(
+    ({ from: fromA }, { from: fromB }) => fromA - fromB,
+  )
+
+module.exports = {
+  ...module.exports,
+  status,
+  total,
+  today,
+  timesheet,
+}

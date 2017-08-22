@@ -33,22 +33,6 @@ const timetable = events =>
     }
   }, {})
 
-const totalRecuder = (task, entries) => ({
-  task,
-  totalSeconds: entries.reduce(
-    (total, [from, to]) => total + seconds(duration(to || Date.now(), from)),
-    0,
-  ),
-  running: entries[entries.length - 1][2],
-})
-
-const timesheetReducer = (task, entries) =>
-  entries.map(([from, to]) => ({
-    task,
-    from,
-    to,
-  }))
-
 const totals = (events, recuder, checkFrom, checkTo) => {
   const times = timetable(events)
   return Object.keys(times).reduce((rpt, task) => {
@@ -90,25 +74,45 @@ const status = events => {
   }
 }
 
-const total = events => totals(events, totalRecuder)
+const total = (events, from, to) =>
+  totals(
+    events,
+    (task, entries) => ({
+      task,
+      totalSeconds: entries.reduce(
+        (total, [from, to]) =>
+          total + seconds(duration(to || Date.now(), from)),
+        0,
+      ),
+      running: entries[entries.length - 1][2],
+    }),
+    from,
+    to,
+  )
 
 const today = events => {
   const from = todayDate()
   const to = from + ONE_DAY
-  return totals(events, totalRecuder, from, to)
+  return total(events, from, to)
 }
 
-const timesheet = events =>
-  totals(events, timesheetReducer).sort(
-    ({ from: fromA }, { from: fromB }) => fromA - fromB,
-  )
+const timesheet = (events, from, to) =>
+  totals(
+    events,
+    (task, entries) =>
+      entries.map(([from, to]) => ({
+        task,
+        from,
+        to,
+      })),
+    from,
+    to,
+  ).sort(({ from: fromA }, { from: fromB }) => fromA - fromB)
 
 const timesheettoday = events => {
   const from = todayDate()
   const to = from + ONE_DAY
-  return totals(events, timesheetReducer, from, to).sort(
-    ({ from: fromA }, { from: fromB }) => fromA - fromB,
-  )
+  return timesheet(events, from, to)
 }
 
 module.exports = {

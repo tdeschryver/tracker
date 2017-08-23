@@ -1,11 +1,11 @@
 const test = require('tape')
 const sinon = require('sinon')
-const store = require('../src/bin/store')
+const eventstore = require('../src/bin/eventstore')
 const logger = require('../src/bin/logger')
 const cli = require('../src/bin/tracker')
 
 const setup = () => ({
-  stubs: [sinon.stub(store, 'append').callsFake()],
+  stubs: [sinon.stub(eventstore, 'append').callsFake()],
   logSpy: sinon.spy(logger, 'log'),
 })
 

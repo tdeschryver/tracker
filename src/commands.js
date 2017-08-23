@@ -6,16 +6,13 @@ const start = ({ task }, events) => {
     return []
   }
 
-  let currentSequenceNumber = (lastEvent && lastEvent.sequenceNumber) || 0
   if (lastEvent && lastEvent.name === 'timer_started') {
     return [
       createStop({
         task: lastEvent.task,
-        sequenceNumber: ++currentSequenceNumber,
       }),
       createStart({
         task,
-        sequenceNumber: ++currentSequenceNumber,
       }),
     ]
   }
@@ -23,7 +20,6 @@ const start = ({ task }, events) => {
   return [
     createStart({
       task: task,
-      sequenceNumber: ++currentSequenceNumber,
     }),
   ]
 }
@@ -38,11 +34,9 @@ const stop = (data, events) => {
     return []
   }
 
-  const currentSequenceNumber = (lastEvent && lastEvent.sequenceNumber) || 0
   return [
     createStop({
       task: lastEvent.task,
-      sequenceNumber: currentSequenceNumber + 1,
     }),
   ]
 }

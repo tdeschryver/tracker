@@ -1,4 +1,4 @@
-const store = require('./store')
+const eventstore = require('./eventstore')
 const {
   errorFormatter,
   infoFormatter,
@@ -14,11 +14,11 @@ const defaultFile = () =>
     : '~/.tracker-store.json'
 
 const history = file => {
-  if (store.exists(file)) {
-    return store.read(file)
+  if (eventstore.exists(file)) {
+    return eventstore.read(file)
   }
 
-  store.create(file)
+  eventstore.create(file)
   return []
 }
 
@@ -44,6 +44,10 @@ const track = ({ file, command, task, history }) => {
     history,
   }
 
+  const originalVersion = history.length
+    ? history[history.length - 1].sequenceNumber
+    : -1
+
   tracker(cmd, {
     message: msg => {
       logger.log(printer(command, msg), grayFormatter)
@@ -53,7 +57,7 @@ const track = ({ file, command, task, history }) => {
       process.exitCode = 1
     },
     events: events => {
-      store.append(file, events)
+      eventstore.append(file, events, originalVersion)
       handleEvents(events)
     },
   })

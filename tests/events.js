@@ -22,7 +22,6 @@ test('starting a task', assert => {
       name: 'timer_started',
       task: 'foo',
       startedAt: 1502829303096,
-      sequenceNumber: 1,
     },
   ]
 
@@ -49,7 +48,6 @@ test('starting a task while already running', assert => {
         name: 'timer_started',
         task: 'foo',
         startedAt: 1502829303096,
-        sequenceNumber: 1,
       },
     ],
   })
@@ -80,7 +78,6 @@ test('starting a task while another task is already running', assert => {
         name: 'timer_started',
         task: 'foo',
         startedAt: 1502829303096,
-        sequenceNumber: 1,
       },
     ],
   })
@@ -90,13 +87,11 @@ test('starting a task while another task is already running', assert => {
       name: 'timer_stopped',
       task: 'foo',
       stoppedAt: 1502829303096,
-      sequenceNumber: 2,
     },
     {
       name: 'timer_started',
       task: 'bar',
       startedAt: 1502829303096,
-      sequenceNumber: 3,
     },
   ]
 
@@ -123,7 +118,6 @@ test('stopping a task', assert => {
         name: 'timer_started',
         task: 'foo',
         startedAt: 1502829303096,
-        sequenceNumber: 1,
       },
     ],
   })
@@ -133,7 +127,6 @@ test('stopping a task', assert => {
       name: 'timer_stopped',
       task: 'foo',
       stoppedAt: 1502829303096,
-      sequenceNumber: 2,
     },
   ]
 

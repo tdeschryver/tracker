@@ -48,19 +48,20 @@ const track = ({ file, command, task, history }) => {
     ? history[history.length - 1].sequenceNumber
     : -1
 
-  tracker(cmd, {
-    message: msg => {
-      logger.log(printer(command, msg), grayFormatter)
-    },
-    error: err => {
-      logger.log(err, errorFormatter)
-      process.exitCode = 1
-    },
-    events: events => {
-      eventstore.append(file, events, originalVersion)
-      handleEvents(events)
-    },
-  })
+  try {
+    tracker(cmd, {
+      message: msg => {
+        logger.log(printer(command, msg), grayFormatter)
+      },
+      events: events => {
+        eventstore.append(file, events, originalVersion)
+        handleEvents(events)
+      },
+    })
+  } catch (err) {
+    logger.log(err, errorFormatter)
+    process.exitCode = 1
+  }
 }
 
 module.exports = { ...module.exports, track, history, defaultFile }

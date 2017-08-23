@@ -1,4 +1,4 @@
-module.exports = ({ command, data, history }, { message, events, error }) => {
+module.exports = ({ command, data, history }, { message, events }) => {
   switch (command) {
     case 'start':
     case 'stop':
@@ -12,7 +12,6 @@ module.exports = ({ command, data, history }, { message, events, error }) => {
       message(require('./queries')[command](history))
       break
     default:
-      error(`Command ${command} not found.`)
-      break
+      throw new Error(`Command ${command} not found.`)
   }
 }

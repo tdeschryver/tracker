@@ -1,5 +1,4 @@
 const reset = '\u001b[0m'
-
 const colors = {
   black: '\u001b[30m',
   red: '\u001b[31m',
@@ -12,12 +11,14 @@ const colors = {
   gray: '\u001b[90m',
 }
 
+const format = (ansi, message) => `${ansi}${message}${reset}`
+
 module.exports = {
   ...module.exports,
-  defaultFormatter: message => `${reset}${message}${reset}`,
-  infoFormatter: message => `${colors.cyan}${message}${reset}`,
-  successFormatter: message => `${colors.green}${message}${reset}`,
-  warningFormatter: message => `${colors.yellow}${message}${reset}`,
-  errorFormatter: message => `${colors.red}${message}${reset}`,
-  grayFormatter: message => `${colors.gray}${message}${reset}`,
+  defaultFormatter: message => format(reset, message),
+  infoFormatter: message => format(colors.cyan, message),
+  successFormatter: message => format(colors.green, message),
+  warningFormatter: message => format(colors.yellow, message),
+  errorFormatter: message => format(colors.red, message),
+  grayFormatter: message => format(colors.gray, message),
 }

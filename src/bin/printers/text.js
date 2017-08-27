@@ -1,4 +1,11 @@
 const { formatSeconds } = require('../../utils')
+const {
+  STATUS,
+  SUMMARY,
+  SUMMARY_TODAY,
+  TIMESHEET,
+  TIMESHEET_TODAY,
+} = require('../../queries').default
 
 const summarize = tasks =>
   tasks
@@ -21,17 +28,17 @@ const timesheet = (entries, formatter) =>
     .join('\n')
 
 const printers = {
-  status: ({ task, running, seconds }) => {
+  [STATUS]: ({ task, running, seconds }) => {
     if (running) {
       return `${task} been running for ${formatSeconds(seconds)}`
     }
 
     return 'Nothing being tracked.'
   },
-  total: summarize,
-  today: summarize,
-  timesheet: entries => timesheet(entries, date => date.toLocaleString()),
-  timesheettoday: entries =>
+  [SUMMARY]: summarize,
+  [SUMMARY_TODAY]: summarize,
+  [TIMESHEET]: entries => timesheet(entries, date => date.toLocaleString()),
+  [TIMESHEET_TODAY]: entries =>
     timesheet(entries, date => date.toLocaleTimeString()),
 }
 

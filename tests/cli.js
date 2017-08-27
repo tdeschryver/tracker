@@ -3,6 +3,7 @@ const sinon = require('sinon')
 const eventstore = require('../src/bin/eventstore')
 const logger = require('../src/bin/logger')
 const cli = require('../src/bin/tracker')
+const { TIMER_STARTED, TIMER_STOPPED } = require('../src/events').default
 
 const setup = () => ({
   stubs: [sinon.stub(eventstore, 'append').callsFake()],
@@ -99,10 +100,10 @@ test('log: stopping a task when there is no history', assert => {
 })
 
 const createTimerStartedEvent = task => ({
-  name: 'timer_started',
+  name: TIMER_STARTED,
   task,
 })
 
 const createTimerStoppedEvent = () => ({
-  name: 'timer_stopped',
+  name: TIMER_STOPPED,
 })

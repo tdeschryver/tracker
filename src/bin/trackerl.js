@@ -3,6 +3,8 @@
 const inquirer = require('inquirer')
 const Fuse = require('fuse.js')
 const { track, defaultFile, history } = require('./tracker')
+const { TIMER_STARTED } = require('../events').default
+const queries = require('../queries').default
 
 let _history
 
@@ -26,11 +28,11 @@ const questions = [
     message: 'What are you up to?',
     suggestOnly: true,
     source: ({ file }, input) => {
-      if (typeof historyCache === 'undefined') {
+      if (typeof _history === 'undefined') {
         const his = history(file)
         _history = {
           fuseInstance: new Fuse(
-            his.filter(({ name }) => name === 'timer_started'),
+            his.filter(({ name }) => name === TIMER_STARTED),
             {
               id: 'task',
               keys: ['task'],
@@ -54,14 +56,14 @@ const questions = [
     },
     when: answers => answers.command === 'start',
     validate: val => {
-      return val ? true : 'You must fill in a task'
+      return val ? true : 'You must fill in a taskname'
     },
   },
   {
     type: 'list',
     name: 'report',
     message: 'Choose a report',
-    choices: ['total', 'today', 'timesheet', 'timesheettoday'],
+    choices: Object.values(queries),
     when: answers => answers.command === 'report',
   },
 ]

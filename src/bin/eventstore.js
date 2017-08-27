@@ -1,6 +1,8 @@
 const fs = require('fs')
 const eventstore = require('../eventstore')
 
+const stringify = value => JSON.stringify(value, null, 2)
+
 const exists = file => fs.existsSync(file)
 const create = file => fs.writeFileSync(file, stringify([], null, 2))
 const read = file => JSON.parse(fs.readFileSync(file, { encoding: 'utf-8' }))
@@ -16,6 +18,5 @@ const append = (file, events, expectedVersion) => {
     expectedVersion,
   )
 }
-const stringify = value => JSON.stringify(value, null, 2)
 
 module.exports = { ...module.exports, read, exists, create, append }

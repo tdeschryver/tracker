@@ -1,4 +1,11 @@
-const { start: createStart, stop: createStop } = require('./events')
+const {
+  default: { TIMER_STARTED, TIMER_STOPPED },
+  start: createStart,
+  stop: createStop,
+} = require('./events')
+
+const START = 'start'
+const STOP = 'stop'
 
 const start = ({ task }, events) => {
   const lastEvent = events[events.length - 1]
@@ -6,7 +13,7 @@ const start = ({ task }, events) => {
     return []
   }
 
-  if (lastEvent && lastEvent.name === 'timer_started') {
+  if (lastEvent && lastEvent.name === TIMER_STARTED) {
     return [
       createStop({
         task: lastEvent.task,
@@ -30,7 +37,7 @@ const stop = (data, events) => {
   }
 
   const lastEvent = events[events.length - 1]
-  if (lastEvent && lastEvent.name === 'timer_stopped') {
+  if (lastEvent && lastEvent.name === TIMER_STOPPED) {
     return []
   }
 
@@ -41,4 +48,12 @@ const stop = (data, events) => {
   ]
 }
 
-module.exports = { ...module.exports, start, stop }
+module.exports = {
+  ...module.exports,
+  default: {
+    START,
+    STOP,
+  },
+  [START]: start,
+  [STOP]: stop,
+}

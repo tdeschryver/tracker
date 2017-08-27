@@ -7,7 +7,7 @@ const fixtureEmpty = JSON.parse(
   fs.readFileSync('./tests/fixtures/eventstore-empty.json'),
 )
 
-test('append()', assert => {
+test('append() does not throw', assert => {
   assert.doesNotThrow(() => {
     eventstore.append(() => fixture, () => {}, [], 0)
   })

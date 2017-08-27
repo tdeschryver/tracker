@@ -1,22 +1,31 @@
+const { TIMER_STARTED, TIMER_STOPPED } = require('./events').default
+
+const STATUS = 'status'
+const SUMMARY = 'summary'
+const SUMMARY_TODAY = 'summary_today'
+const TIMESHEET = 'timesheet'
+const TIMESHEET_TODAY = 'timesheet_today'
+
+const ONE_DAY = 24 * 60 * 60 * 1000
+
 const seconds = value => value / 1000
 const duration = (a, b) => a - b
 const todayDate = () => {
   const date = new Date()
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
 }
-const ONE_DAY = 24 * 60 * 60 * 1000
 
 const timetable = events =>
   events.reduce((report, event) => {
     report[event.task] = report[event.task] || []
-    if (event.name === 'timer_started') {
+    if (event.name === TIMER_STARTED) {
       return {
         ...report,
         [event.task]: [...report[event.task], [event.startedAt, null]],
       }
     }
 
-    if (event.name === 'timer_stopped') {
+    if (event.name === TIMER_STOPPED) {
       return {
         ...report,
         [event.task]: report[event.task].map((entry, index) => {
@@ -59,7 +68,7 @@ const totals = (events, recuder, checkFrom, checkTo) => {
 
 const status = events => {
   const lastEvent = events[events.length - 1]
-  if (lastEvent && lastEvent.name === 'timer_started') {
+  if (lastEvent && lastEvent.name === TIMER_STARTED) {
     return {
       task: lastEvent.task,
       running: true,
@@ -74,7 +83,7 @@ const status = events => {
   }
 }
 
-const total = (events, from, to) =>
+const summary = (events, from, to) =>
   totals(
     events,
     (task, entries) => ({
@@ -90,10 +99,10 @@ const total = (events, from, to) =>
     to,
   )
 
-const today = events => {
+const summaryToday = events => {
   const from = todayDate()
   const to = from + ONE_DAY
-  return total(events, from, to)
+  return summary(events, from, to)
 }
 
 const timesheet = (events, from, to) =>
@@ -109,7 +118,7 @@ const timesheet = (events, from, to) =>
     to,
   ).sort(({ from: fromA }, { from: fromB }) => fromA - fromB)
 
-const timesheettoday = events => {
+const timesheetToday = events => {
   const from = todayDate()
   const to = from + ONE_DAY
   return timesheet(events, from, to)
@@ -117,9 +126,16 @@ const timesheettoday = events => {
 
 module.exports = {
   ...module.exports,
-  status,
-  total,
-  today,
-  timesheet,
-  timesheettoday,
+  default: {
+    STATUS,
+    SUMMARY,
+    SUMMARY_TODAY,
+    TIMESHEET,
+    TIMESHEET_TODAY,
+  },
+  [STATUS]: status,
+  [SUMMARY]: summary,
+  [SUMMARY_TODAY]: summaryToday,
+  [TIMESHEET]: timesheet,
+  [TIMESHEET_TODAY]: timesheetToday,
 }

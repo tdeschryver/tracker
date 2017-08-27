@@ -7,6 +7,7 @@ const {
 const logger = require('./logger')
 const printer = require('./printers')('text')
 const tracker = require('../')
+const { TIMER_STARTED, TIMER_STOPPED } = require('../events').default
 
 const defaultFile = () =>
   process.platform === 'win32'
@@ -25,10 +26,10 @@ const history = file => {
 const handleEvents = events => {
   events.forEach(({ name, task }) => {
     switch (name) {
-      case 'timer_started':
+      case TIMER_STARTED:
         logger.log(`Started ${task}`, infoFormatter)
         break
-      case 'timer_stopped':
+      case TIMER_STOPPED:
         logger.log(`Stopped ${task}`, infoFormatter)
         break
     }

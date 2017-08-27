@@ -70,8 +70,8 @@ test('status with a stopped task', async assert => {
   teardown(stubs)
 })
 
-test('total', async assert => {
-  const { stubs, fixture } = await setup('total')
+test('summary', async assert => {
+  const { stubs, fixture } = await setup('summary')
   const expected = [
     { task: 'foo', totalSeconds: 7141.147999999999, running: false },
     { task: 'bar', totalSeconds: 4.043, running: false },
@@ -79,7 +79,7 @@ test('total', async assert => {
 
   tracker(
     {
-      command: 'total',
+      command: 'summary',
       history: fixture,
     },
     {
@@ -90,8 +90,8 @@ test('total', async assert => {
   teardown(stubs)
 })
 
-test('today', async assert => {
-  const { stubs, fixture } = await setup('today')
+test('summary today', async assert => {
+  const { stubs, fixture } = await setup('summary-today')
   const expected = [
     { task: 'foo', totalSeconds: 5.681, running: false },
     { task: 'bar', totalSeconds: 4.043, running: false },
@@ -99,7 +99,7 @@ test('today', async assert => {
 
   tracker(
     {
-      command: 'today',
+      command: 'summary_today',
       history: fixture,
     },
     {
@@ -110,15 +110,15 @@ test('today', async assert => {
   teardown(stubs)
 })
 
-test('today when task started yesterday and is still running', async assert => {
+test('summary today when task started yesterday and is still running', async assert => {
   const { stubs, fixture } = await setup(
-    'today-started-yesterday-still-running',
+    'summary-today-started-yesterday-still-running',
   )
   const expected = [{ task: 'bar', totalSeconds: 74103.096, running: true }]
 
   tracker(
     {
-      command: 'today',
+      command: 'summary_today',
       history: fixture,
     },
     {
@@ -129,15 +129,15 @@ test('today when task started yesterday and is still running', async assert => {
   teardown(stubs)
 })
 
-test('today when task started yesterday and is stopped', async assert => {
+test('summary today when task started yesterday and is stopped', async assert => {
   const { stubs, fixture } = await setup(
-    'today-started-yesterday-stopped-today',
+    'summary-today-started-yesterday-stopped-today',
   )
   const expected = [{ task: 'bar', totalSeconds: 56103.096, running: false }]
 
   tracker(
     {
-      command: 'today',
+      command: 'summary_today',
       history: fixture,
     },
     {
@@ -148,13 +148,15 @@ test('today when task started yesterday and is stopped', async assert => {
   teardown(stubs)
 })
 
-test('today task started today and is still running', async assert => {
-  const { stubs, fixture } = await setup('today-started-today-still-running')
+test('summary today task started today and is still running', async assert => {
+  const { stubs, fixture } = await setup(
+    'summary-today-started-today-still-running',
+  )
   const expected = [{ task: 'foo', totalSeconds: 18000, running: true }]
 
   tracker(
     {
-      command: 'today',
+      command: 'summary_today',
       history: fixture,
     },
     {
